@@ -7,42 +7,10 @@ using System.Threading.Tasks;
 
 namespace SqliteTest.Models
 {
-    public class Grade
-    {
-        [Column(IsIdentity = true, IsPrimary = true)]
-        public int Id { get; set; }
-
-        public int Index { get; set; }
-        public List<Team> Teams { get; set; }
-    }
-
-    public class Student
-    {
-        public string Age { get; set; }
-
-        public int GradeId { get; set; }
-
-        [Column(IsIdentity = true, IsPrimary = true)]
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-        public int TeamId { get; set; }
-    }
-
-    public class Teacher
-    {
-        public string Age { get; set; }
-
-        public int GradeId { get; set; }
-
-        [Column(IsIdentity = true, IsPrimary = true)]
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-        public int TeamId { get; set; }
-    }
-
-    public class Team
+    /// <summary>
+    /// 班级
+    /// </summary>
+    public class Class
     {
         [Column(IsIdentity = true, IsPrimary = true)]
         public int Id { get; set; }
@@ -51,5 +19,70 @@ namespace SqliteTest.Models
 
         public List<Student> Students { get; set; }
         public int TeacherId { get; set; }
+    }
+
+    /// <summary>
+    /// 课程
+    /// </summary>
+    public class Course
+    {
+        [Column(IsIdentity = true, IsPrimary = true)]
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+    }
+
+    public class Deparment
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class Grade
+    {
+        public List<Class> Classes { get; set; }
+
+        [Column(IsIdentity = true, IsPrimary = true)]
+        public int Id { get; set; }
+
+        public int Index { get; set; }
+    }
+
+    /// <summary>
+    /// 学生
+    /// </summary>
+    public class Student
+    {
+        public string Age { get; set; }
+
+        [Column(IsIdentity = true, IsPrimary = true)]
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+        public int TeamId { get; set; }
+    }
+
+    public class StudentGrade
+    {
+        public int ClassId { get; set; }
+        public int CourseId { get; set; }
+        public int TeacherId { get; set; }
+    }
+
+    /// <summary>
+    /// 老师
+    /// </summary>
+    public class Teacher
+    {
+        public string Age { get; set; }
+
+        public int DeparmentId { get; set; }
+        public int GradeId { get; set; }
+
+        [Column(IsIdentity = true, IsPrimary = true)]
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+        public int TeamId { get; set; }
     }
 }
