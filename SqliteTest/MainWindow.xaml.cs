@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqliteTest.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,12 @@ namespace SqliteTest
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Storage.Sqlite.Insert(new Student() { Name = "张三丰", Age = 101 });
         }
     }
 }

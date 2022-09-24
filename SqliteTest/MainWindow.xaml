@@ -1,12 +1,25 @@
-﻿<Window x:Class="SqliteTest.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SqliteTest"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+﻿<Window
+    x:Class="SqliteTest.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SqliteTest"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    d:DataContext="{d:DesignInstance local:MainViewModel}"
+    mc:Ignorable="d">
+    <Grid Margin="20">
+        <StackPanel Orientation="Vertical">
+            <Button Command="{Binding ReadCmd}" Content="读取" />
+            <Button
+                Margin="0,10"
+                Command="{Binding WriteCmd}"
+                Content="写入" />
+            <TextBox Margin="0,10" Text="{Binding QueryString}" />
+            <Button Command="{Binding QueryCmd}" Content="查询" />
+            <Button Click="Button_Click" Content="测试" />
+        </StackPanel>
     </Grid>
 </Window>
