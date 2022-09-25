@@ -26,10 +26,5 @@ namespace SqliteTest
             InitializeComponent();
             DataContext = new MainViewModel();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Storage.Sqlite.Insert(new Student() { Name = "张三丰", Age = 101 });
-        }
     }
 }

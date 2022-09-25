@@ -92,8 +92,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ClassViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Storage.cs" />
+    <Compile Include="StudentViewModel.cs" />
+    <Compile Include="TeacherViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
