@@ -7,10 +7,6 @@ namespace SqliteTest
     {
         private readonly Teacher _teacher;
 
-        public int Age { get => _teacher.Age; set => SetProperty(_teacher.Age, value, _teacher, (t, a) => t.Age = a); }
-
-        public string Name { get => _teacher.Name; set => SetProperty(_teacher.Name, value, _teacher, (t, a) => t.Name = a); }
-
         public TeacherViewModel()
         {
             _teacher = new Teacher();
@@ -21,6 +17,15 @@ namespace SqliteTest
             _teacher = teacher;
         }
 
-        public Teacher Build() => _teacher;
+        public int Age { get => _teacher.Age; set => SetProperty(_teacher.Age, value, _teacher, (t, a) => t.Age = a); }
+
+        public IClass Class { get; set; }
+        public string Name { get => _teacher.Name; set => SetProperty(_teacher.Name, value, _teacher, (t, a) => t.Name = a); }
+
+        public Teacher Build(Class @class)
+        {
+            _teacher.Class = @class;
+            return _teacher;
+        }
     }
 }

@@ -16,34 +16,6 @@ namespace SqliteTest
     {
         private string queryString;
 
-        public IAsyncRelayCommand ReadStudentsCmd { get; private set; }
-
-        public IAsyncRelayCommand QueryStudentsCmd { get; private set; }
-
-        public IAsyncRelayCommand ReadClassesCmd { get; private set; }
-
-        public IAsyncRelayCommand UpdateClassesCmd { get; private set; }
-
-        public IAsyncRelayCommand UpdateTeachersCmd { get; private set; }
-
-        public IAsyncRelayCommand DeleteClassesCmd { get; private set; }
-
-        public IAsyncRelayCommand DeleteTeachersCmd { get; private set; }
-
-        public IAsyncRelayCommand QueryClassesCmd { get; private set; }
-
-        public IAsyncRelayCommand ReadTeachersCmd { get; private set; }
-
-        public IAsyncRelayCommand QueryTeachersCmd { get; private set; }
-
-        public ObservableCollection<StudentViewModel> Students { get; set; }
-
-        public ObservableCollection<TeacherViewModel> Teachers { get; set; }
-
-        public ObservableCollection<ClassViewModel> Classes { get; set; }
-
-        public string QueryString { get => queryString; set => SetProperty(ref queryString, value); }
-
         public MainViewModel()
         {
             Students = new ObservableCollection<StudentViewModel>();
@@ -58,28 +30,27 @@ namespace SqliteTest
             DeleteClassesCmd = new AsyncRelayCommand<IEnumerable>(DeleteClasses);
 
             ReadTeachersCmd = new AsyncRelayCommand(ReadTeachers);
-            UpdateTeachersCmd = new AsyncRelayCommand(UpdateTeachers);
+            UpdateTeachersCmd = new AsyncRelayCommand<IClass>(UpdateTeachers);
             DeleteTeachersCmd = new AsyncRelayCommand<IEnumerable>(DeleteTeachers);
             QueryTeachersCmd = new AsyncRelayCommand(QueryTeachers);
         }
 
-        private async Task DeleteTeachers(IEnumerable teachers)
-        {
-            if (teachers == null) { return; }
-            await Task.Run(() =>
-            {
-                var list = teachers.Cast<TeacherViewModel>().Select(c => c.Build());
-                Storage.Sqlite.Delete<Teacher>().Where(list).ExecuteAffrows();
-            });
-        }
+        public ObservableCollection<ClassViewModel> Classes { get; set; }
+        public IAsyncRelayCommand DeleteClassesCmd { get; private set; }
+        public IAsyncRelayCommand DeleteTeachersCmd { get; private set; }
+        public IAsyncRelayCommand QueryClassesCmd { get; private set; }
+        public string QueryString { get => queryString; set => SetProperty(ref queryString, value); }
+        public IAsyncRelayCommand QueryStudentsCmd { get; private set; }
+        public IAsyncRelayCommand QueryTeachersCmd { get; private set; }
+        public IAsyncRelayCommand ReadClassesCmd { get; private set; }
+        public IAsyncRelayCommand ReadStudentsCmd { get; private set; }
+        public IAsyncRelayCommand ReadTeachersCmd { get; private set; }
+        public ClassViewModel SelectedClass { get; set; }
+        public ObservableCollection<StudentViewModel> Students { get; set; }
+        public ObservableCollection<TeacherViewModel> Teachers { get; set; }
+        public IAsyncRelayCommand UpdateClassesCmd { get; private set; }
 
-        private async Task UpdateTeachers()
-        {
-            await Task.Run(() =>
-            {
-                Storage.Sqlite.InsertOrUpdate<Teacher>().SetSource(Teachers.Select(c => c.Build())).ExecuteAffrowsAsync();
-            });
-        }
+        public IAsyncRelayCommand UpdateTeachersCmd { get; private set; }
 
         private async Task DeleteClasses(IEnumerable classes)
         {
@@ -96,17 +67,29 @@ namespace SqliteTest
             }
         }
 
-        private async Task UpdateClasses()
+        private async Task DeleteTeachers(IEnumerable teachers)
         {
+            if (teachers == null) { return; }
             await Task.Run(() =>
             {
-                Storage.Sqlite.InsertOrUpdate<Class>().SetSource(Classes.Select(c => c.Build())).ExecuteAffrowsAsync();
+                var list = teachers.Cast<TeacherViewModel>().Select(c => c.Build(SelectedClass.Build()));
+                Storage.Sqlite.Delete<Teacher>().Where(list).ExecuteAffrows();
             });
         }
 
         private Task QueryClasses()
         {
             throw new NotImplementedException();
+        }
+
+        private async Task QueryStudents()
+        {
+            await Task.Run(() => { });
+        }
+
+        private async Task QueryTeachers()
+        {
+            return;
         }
 
         private async Task ReadClasses()
@@ -123,9 +106,9 @@ namespace SqliteTest
             }
         }
 
-        private async Task QueryTeachers()
+        private async Task ReadStudents()
         {
-            return;
+            await Task.Run(() => { });
         }
 
         private async Task ReadTeachers()
@@ -142,14 +125,23 @@ namespace SqliteTest
             }
         }
 
-        private async Task QueryStudents()
+        private async Task UpdateClasses()
         {
-            await Task.Run(() => { });
+            await Task.Run(() =>
+            {
+                Storage.Sqlite.InsertOrUpdate<Class>().SetSource(Classes.Select(c => c.Build())).ExecuteAffrowsAsync();
+            });
         }
 
-        private async Task ReadStudents()
+        private async Task UpdateTeachers(IClass @class)
         {
-            await Task.Run(() => { });
+            if (@class == null) { return; }
+
+            await Task.Run(() =>
+            {
+                var model = (@class as ClassViewModel).Build();
+                Storage.Sqlite.InsertOrUpdate<Teacher>().SetSource(Teachers.Select(c => c.Build(model))).ExecuteAffrowsAsync();
+            });
         }
     }
 }

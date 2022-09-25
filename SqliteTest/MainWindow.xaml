@@ -46,6 +46,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
                     <DataGridTextColumn Binding="{Binding Age}" Header="Age" />
+                    <DataGridTextColumn Binding="{Binding Class.Number}" Header="ClasNumber" />
                 </DataGrid.Columns>
             </DataGrid>
         </GroupBox>
@@ -99,7 +100,10 @@
                 <GroupBox Grid.Column="1" Header="老师">
                     <StackPanel Orientation="Vertical">
                         <Button Command="{Binding ReadTeachersCmd}" Content="读取" />
-                        <Button Command="{Binding UpdateTeachersCmd}" Content="更新" />
+                        <Button
+                            Command="{Binding UpdateTeachersCmd}"
+                            CommandParameter="{Binding ElementName=ClassDataGrid, Path=SelectedItem}"
+                            Content="更新" />
                         <Button
                             Command="{Binding DeleteTeachersCmd}"
                             CommandParameter="{Binding ElementName=ClassDataGrid, Path=SelectedItems}"

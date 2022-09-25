@@ -7,48 +7,25 @@ using System.Threading.Tasks;
 
 namespace SqliteTest.Models
 {
+    public interface IClass
+    {
+        string Alias { get; set; }
+        int Number { get; set; }
+    }
+
+    public interface IStudent
+    {
+        string Address { get; set; }
+        int Age { get; set; }
+
+        string Name { get; set; }
+    }
+
     public interface ITeacher
     {
         int Age { get; set; }
 
         string Name { get; set; }
-    }
-
-    public interface IClass
-    {
-        int Number { get; set; }
-
-        string Alias { get; set; }
-
-        IEnumerable<IStudent> Students { get; set; }
-
-        IEnumerable<ITeacher> Teachers { get; set; }
-    }
-
-    public interface IStudent
-    {
-        int Age { get; set; }
-
-        string Name { get; set; }
-
-        string Address { get; set; }
-
-        IClass Class { get; set; }
-    }
-
-    [Table(Name = nameof(Student), OldName = nameof(Student))]
-    public class Student : IStudent
-    {
-        public int Age { get; set; }
-
-        [Column(IsIdentity = true, IsPrimary = true)]
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public string Address { get; set; }
-
-        public IClass Class { get; set; }
     }
 
     /// <summary>
@@ -57,22 +34,16 @@ namespace SqliteTest.Models
     [Table(Name = nameof(Class))]
     public class Class : IClass
     {
+        public Class()
+        {
+        }
+
+        public string Alias { get; set; }
+
         [Column(IsIdentity = true, IsPrimary = true)]
         public int Id { get; set; }
 
         public int Number { get; set; }
-
-        public IEnumerable<IStudent> Students { get; set; }
-
-        public IEnumerable<ITeacher> Teachers { get; set; }
-
-        public string Alias { get; set; }
-
-        public Class()
-        {
-            Students = new List<Student>();
-            Teachers = new List<Teacher>();
-        }
     }
 
     /// <summary>
@@ -106,6 +77,18 @@ namespace SqliteTest.Models
         public int Index { get; set; }
     }
 
+    [Table(Name = nameof(Student), OldName = nameof(Student))]
+    public class Student : IStudent
+    {
+        public string Address { get; set; }
+        public int Age { get; set; }
+
+        [Column(IsIdentity = true, IsPrimary = true)]
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+    }
+
     public class StudentGrade
     {
         public int ClassId { get; set; }
@@ -122,6 +105,8 @@ namespace SqliteTest.Models
     public class Teacher : ITeacher
     {
         public int Age { get; set; }
+
+        public Class Class { get; set; }
 
         [Column(IsIdentity = true, IsPrimary = true)]
         public int Id { get; set; }
