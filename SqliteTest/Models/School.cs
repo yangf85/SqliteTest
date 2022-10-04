@@ -1,49 +1,34 @@
 ﻿using FreeSql.DataAnnotations;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SqliteTest.Models
 {
-    public interface IClass
-    {
-        string Alias { get; set; }
-        int Number { get; set; }
-    }
-
-    public interface IStudent
-    {
-        string Address { get; set; }
-        int Age { get; set; }
-
-        string Name { get; set; }
-    }
-
-    public interface ITeacher
-    {
-        int Age { get; set; }
-
-        string Name { get; set; }
-    }
-
     /// <summary>
     /// 班级
     /// </summary>
     [Table(Name = nameof(Class))]
-    public class Class : IClass
+    public class Class
     {
         public Class()
         {
         }
 
-        public string Alias { get; set; }
-
         [Column(IsIdentity = true, IsPrimary = true)]
         public int Id { get; set; }
 
-        public int Number { get; set; }
+        public string Name { get; set; }
+        public string Number { get; set; }
+
+        [Navigate(nameof(Student.ClassId))]
+        public List<Student> Students { get; set; }
+
+        [Navigate(nameof(Teacher.ClassId))]
+        public List<Teacher> Teachers { get; set; }
     }
 
     /// <summary>
@@ -78,10 +63,15 @@ namespace SqliteTest.Models
     }
 
     [Table(Name = nameof(Student), OldName = nameof(Student))]
-    public class Student : IStudent
+    public class Student
     {
         public string Address { get; set; }
         public int Age { get; set; }
+
+        [Navigate(nameof(ClassId))]
+        public Class Class { get; set; }
+
+        public int ClassId { get; set; }
 
         [Column(IsIdentity = true, IsPrimary = true)]
         public int Id { get; set; }
@@ -102,11 +92,14 @@ namespace SqliteTest.Models
     /// 老师
     /// </summary>
     [Table(Name = nameof(Teacher))]
-    public class Teacher : ITeacher
+    public class Teacher
     {
         public int Age { get; set; }
 
+        [Navigate(nameof(ClassId))]
         public Class Class { get; set; }
+
+        public int ClassId { get; set; }
 
         [Column(IsIdentity = true, IsPrimary = true)]
         public int Id { get; set; }

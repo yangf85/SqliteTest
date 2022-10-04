@@ -9,30 +9,28 @@ using System.Threading.Tasks;
 
 namespace SqliteTest
 {
-    internal class StudentViewModel : ObservableObject, IStudent
+    public class StudentViewModel : ObservableObject
     {
-        private Student _student;
-
-        private IClass _class;
-
-        public int Age { get => _student.Age; set => SetProperty(_student.Age, value, _student, (s, a) => s.Age = a); }
-
-        public string Name { get => _student.Name; set => SetProperty(_student.Name, value, _student, (s, a) => s.Name = a); }
-
-        public string Address { get => _student.Address; set => SetProperty(_student.Address, value, _student, (s, a) => s.Address = a); }
-
-        public IClass Class { get => _class; set => SetProperty(ref _class, value); }
+        private readonly Student _student;
 
         public StudentViewModel()
         {
             _student = new Student();
+            Class = new ClassViewModel();
         }
 
-        public StudentViewModel(Student student)
+        public StudentViewModel(Student student) : this()
         {
             _student = student;
         }
 
-        public Student Build() => _student;
+        public string Address { get => _student.Address; set => SetProperty(_student.Address, value, _student, (s, a) => s.Address = a); }
+        public int Age { get => _student.Age; set => SetProperty(_student.Age, value, _student, (s, a) => s.Age = a); }
+
+        public ClassViewModel Class { get; set; }
+
+        public int Id { get => _student.Id; set => SetProperty(_student.Id, value, _student, (s, i) => s.Id = i); }
+
+        public string Name { get => _student.Name; set => SetProperty(_student.Name, value, _student, (s, a) => s.Name = a); }
     }
 }

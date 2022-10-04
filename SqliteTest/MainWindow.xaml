@@ -32,8 +32,14 @@
         <GroupBox Grid.Column="0" Header="班级表">
             <DataGrid x:Name="ClassDataGrid" ItemsSource="{Binding Classes}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Number}" Header="Number" />
-                    <DataGridTextColumn Binding="{Binding Alias}" Header="Alias" />
+                    <DataGridTextColumn
+                        Width="100"
+                        Binding="{Binding Number}"
+                        Header="顺序号" />
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Name}"
+                        Header="名称" />
                 </DataGrid.Columns>
             </DataGrid>
         </GroupBox>
@@ -42,25 +48,42 @@
             x:Name="TeacherDataGrid"
             Grid.Column="1"
             Header="老师表">
-            <DataGrid ItemsSource="{Binding Teachers}">
+            <DataGrid ItemsSource="{Binding ElementName=ClassDataGrid, Path=SelectedItem.Teachers}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                    <DataGridTextColumn Binding="{Binding Age}" Header="Age" />
-                    <DataGridTextColumn Binding="{Binding Class.Number}" Header="ClasNumber" />
+                    <DataGridTextColumn
+                        Width="100"
+                        Binding="{Binding Name}"
+                        Header="姓名" />
+                    <DataGridTextColumn
+                        Width="100"
+                        Binding="{Binding Age}"
+                        Header="年龄" />
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Class.Name}"
+                        Header="班级" />
                 </DataGrid.Columns>
             </DataGrid>
         </GroupBox>
         <GroupBox Grid.Column="2" Header="学生表">
-            <DataGrid ItemsSource="{Binding Students}">
+            <DataGrid ItemsSource="{Binding ElementName=ClassDataGrid, Path=SelectedItem.Students}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
-                        Binding="{Binding Id}"
-                        Header="Id"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                    <DataGridTextColumn Binding="{Binding Age}" Header="Age" />
-                    <DataGridTextColumn Binding="{Binding Address}" Header="Address" />
-                    <DataGridTextColumn Binding="{Binding Class.Number}" Header="Class" />
+                        Width="100"
+                        Binding="{Binding Name}"
+                        Header="姓名" />
+                    <DataGridTextColumn
+                        Width="100"
+                        Binding="{Binding Age}"
+                        Header="年龄" />
+                    <DataGridTextColumn
+                        Width="100"
+                        Binding="{Binding Address}"
+                        Header="地址" />
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Class.Number}"
+                        Header="班级编码" />
                 </DataGrid.Columns>
             </DataGrid>
         </GroupBox>
@@ -68,85 +91,27 @@
             Grid.Row="3"
             Grid.ColumnSpan="3"
             Header="操作">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <GroupBox Grid.Column="0" Header="班级">
-                    <StackPanel Orientation="Vertical">
-                        <Button Command="{Binding ReadClassesCmd}" Content="读取" />
-                        <Button Command="{Binding UpdateClassesCmd}" Content="更新" />
-                        <Button
-                            Command="{Binding DeleteClassesCmd}"
-                            CommandParameter="{Binding ElementName=ClassDataGrid, Path=SelectedItems}"
-                            Content="删除" />
+            <StackPanel Orientation="Vertical">
+                <Button Command="{Binding ReadClassesCmd}" Content="读取" />
+                <Button Command="{Binding UpdateClassesCmd}" Content="更新" />
+                <Button
+                    Command="{Binding DeleteClassesCmd}"
+                    CommandParameter="{Binding ElementName=ClassDataGrid, Path=SelectedItems}"
+                    Content="删除" />
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="7*" />
-                                <ColumnDefinition Width="3*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="0" Text="{Binding QueryString}" />
-                            <Button
-                                Grid.Column="1"
-                                Margin="5,0,0,0"
-                                Command="{Binding QueryClassesCmd}"
-                                Content="查询" />
-                        </Grid>
-                    </StackPanel>
-                </GroupBox>
-                <GroupBox Grid.Column="1" Header="老师">
-                    <StackPanel Orientation="Vertical">
-                        <Button Command="{Binding ReadTeachersCmd}" Content="读取" />
-                        <Button
-                            Command="{Binding UpdateTeachersCmd}"
-                            CommandParameter="{Binding ElementName=ClassDataGrid, Path=SelectedItem}"
-                            Content="更新" />
-                        <Button
-                            Command="{Binding DeleteTeachersCmd}"
-                            CommandParameter="{Binding ElementName=ClassDataGrid, Path=SelectedItems}"
-                            Content="删除" />
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="7*" />
-                                <ColumnDefinition Width="3*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="0" Text="{Binding QueryString}" />
-                            <Button
-                                Grid.Column="1"
-                                Margin="5,0,0,0"
-                                Command="{Binding QueryClassesCmd}"
-                                Content="查询" />
-                        </Grid>
-                    </StackPanel>
-                </GroupBox>
-
-                <GroupBox Grid.Column="2" Header="学生">
-                    <StackPanel Orientation="Vertical">
-                        <Button Command="{Binding ReadTeachersCmd}" Content="读取" />
-                        <Button Command="{Binding UpdateTeachersCmd}" Content="更新" />
-                        <Button
-                            Command="{Binding DeleteTeachersCmd}"
-                            CommandParameter="{Binding ElementName=ClassDataGrid, Path=SelectedItems}"
-                            Content="删除" />
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="7*" />
-                                <ColumnDefinition Width="3*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="0" Text="{Binding QueryString}" />
-                            <Button
-                                Grid.Column="1"
-                                Margin="5,0,0,0"
-                                Command="{Binding QueryClassesCmd}"
-                                Content="查询" />
-                        </Grid>
-                    </StackPanel>
-                </GroupBox>
-            </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="7*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Text="{Binding QueryString}" />
+                    <Button
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        Command="{Binding QueryClassesCmd}"
+                        Content="查询" />
+                </Grid>
+            </StackPanel>
         </GroupBox>
     </Grid>
 </Window>
